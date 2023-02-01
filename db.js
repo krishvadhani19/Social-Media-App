@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-const mongoURI = "mongodb://localhost:27017/social-media-app";
+const mongoURL = process.env.MONGO_URL;
 
 const connectToMongo = () => {
   mongoose
-    .connect(mongoURI, () => {
+    .connect(mongoURL, () => {
       console.log("Connected to Mongo Successfully!");
     })
     .catch((err) => {

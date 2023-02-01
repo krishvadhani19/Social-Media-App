@@ -11,13 +11,19 @@ global.include = function (file) {
 const app = require("./app");
 const connectToMongo = require("./db");
 
+// importing modules
+const dotenv = require("dotenv");
+
+// setting up the environment
+dotenv.config({ path: "./config.env" });
+
 // working on port
-const port = 3000;
+const port = process.env.PORT;
 
 // connecting to mongo
 connectToMongo();
 
-//
+// listening at given port
 const server = app.listen(port, () => {
   console.log(`App is running on port ${port}`);
 });
