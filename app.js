@@ -13,9 +13,10 @@ const AppError = include("utils/appError");
 // creating express app
 const app = express();
 
+// 1. middleware between req and res
+app.use(express.json());
+
 // ---------------------------------------------------------------------------------
-// middlewares
-if(process.env.NODE_ENV === 'development'){}
 
 // Routes Middleware
 app.use("/api/v1/users", userRouter);

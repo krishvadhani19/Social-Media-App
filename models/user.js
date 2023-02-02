@@ -19,31 +19,24 @@ let userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "A user must have password"],
-    minLength: [8, "Password must be atleast 8 characters"],
+    minLength: 8,
     select: false,
   },
   confirmPassword: {
     type: String,
     required: [true, "A user must have Confirm Password"],
-    minLength: [8, "Password must be atleast 8 charcters"],
-    validate: {
-      validatior: function (value) {
-        return value === this.password;
-      },
-      message: "Password does not match ConfirmPassword!",
-    },
+    minLength: 8,
+    // validate: {
+    //   validatior: function (value) {
+    //     return value === this.password;
+    //   },
+    //   message: "Password does not match ConfirmPassword!",
+    // },
     select: false,
   },
   passwordChangedAt: {
     type: Date,
-  },
-  passwordResetToken: {
-    type: String,
-  },
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
+    default: Date.now(),
   },
 });
 

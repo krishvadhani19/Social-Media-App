@@ -14,6 +14,13 @@ const connectToMongo = require("./db");
 // importing modules
 const dotenv = require("dotenv");
 
+// catching uncaught exceptions
+process.on("uncaughtException", (err) => {
+  console.log(err.name, err.message);
+  console.log("Unhandled Rejection. Shutting down...");
+  process.exit(1);
+});
+
 // setting up the environment
 dotenv.config({ path: "./config.env" });
 
@@ -26,4 +33,13 @@ connectToMongo();
 // listening at given port
 const server = app.listen(port, () => {
   console.log(`App is running on port ${port}`);
+});
+
+// Errors outside express unhandled rejections
+process.on("unhandledRejection", (err) => {
+  console.log(err.name, err.message);
+  console.log("Unhandled Rejection. Shutting down...");
+  server.close(() => {
+    process.exit(1);
+  });
 });

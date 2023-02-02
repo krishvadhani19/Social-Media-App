@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const mongoURL = process.env.MONGO_URL;
+const { default: mongoose } = require("mongoose");
+const mongoURL = "mongodb://localhost:27017/social-media-app";
 
 const connectToMongo = () => {
   mongoose
@@ -7,7 +7,7 @@ const connectToMongo = () => {
       console.log("Connected to Mongo Successfully!");
     })
     .catch((err) => {
-      console.log("Error!");
+      console.log(err, "Error!");
     });
 };
 

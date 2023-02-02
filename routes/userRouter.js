@@ -1,6 +1,6 @@
 // importing files
-// const authController = include("controllers/userController");
-// const userController = include("controllers/authController");
+// const userController = include("controllers/userController");
+const authController = include("controllers/authController");
 
 // importing modules
 const express = require("express");
@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 
 // Authentication
-// router.route("/signup").post(authController.signup);
+router.route("/signup").post(authController.signup);
 // router.route("/login").post(authController.login);
 
 module.exports = router;
