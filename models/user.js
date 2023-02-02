@@ -1,6 +1,7 @@
 // importing modules
 const validator = require("validator");
 const { default: mongoose } = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 let userSchema = new mongoose.Schema({
   name: {
@@ -26,18 +27,34 @@ let userSchema = new mongoose.Schema({
     type: String,
     required: [true, "A user must have Confirm Password"],
     minLength: 8,
-    // validate: {
-    //   validatior: function (value) {
-    //     return value === this.password;
-    //   },
-    //   message: "Password does not match ConfirmPassword!",
-    // },
+    validate: {
+      validator: function (value) {
+        return value === this.password;
+      },
+      message: "Password does not match ConfirmPassword!",
+    },
     select: false,
   },
   passwordChangedAt: {
     type: Date,
     default: Date.now(),
   },
+});
+
+// Hashing the password brfore saving
+userSchema.pre("save", async function (next) {
+  // if password is not modified then hashing will be skipped
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  // Hashing the password
+  this.password = await bcrypt.hash(this.password, 10);
+
+  // Deleting the confirmPassword
+  this.confirmPassword = undefined;
+
+  next();
 });
 
 const User = mongoose.model("User", userSchema);
