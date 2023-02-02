@@ -5,6 +5,7 @@ const AppError = include("utils/appError");
 
 // importing modules
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
 // Function for signing token
 const signToken = (userId) => {
@@ -76,4 +77,36 @@ exports.login = catchAsyncError(async (req, res, next) => {
 
   // 3. if everything is find send response token
   createSendToken(currentUser, 201, res);
+});
+
+// PROTECT
+// to verify user before performing any operation
+exports.protect = catchAsyncError(async (req, res, next) => {
+  let inputToken;
+
+  // checking the authtoken before performing any action
+  if (req.headers.authtoken && req.headers.authtoken.startsWith("Bearer")) {
+    inputToken = req.headers.authtoken.split(" ")[1];
+  } else {
+    return next(
+      new AppError("You are not logged in! Please try again later.", 401)
+    );
+  }
+
+  // verify the token using promisify
+  const decoded = await promisify(jwt.verify)(
+    inputToken,
+    process.env.JWT_SECRET
+  );
+
+  // decoded has 'id' and 'inter arrival time'
+  // find user if it exists or not
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser) {
+    return next(new AppError("User does not exist!", 404));
+  }
+
+  // grant access
+  req.user = currentUser;
+  next();
 });
