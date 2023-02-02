@@ -33,3 +33,17 @@ exports.updateMe = catchAsyncError(async (req, res, next) => {
     user: updatedUser,
   });
 });
+
+// user deleting its own profile
+exports.deleteMe = catchAsyncError(async (req, res, next) => {
+  // fetch user from db
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    active: false,
+  });
+
+  // sending response after deleting
+  res.status(204).json({
+    status: "success",
+    user: user,
+  });
+});

@@ -16,5 +16,8 @@ router.route("/login").post(authController.login);
 router
   .route("/updateMe")
   .patch(authController.protect, userController.updateMe);
+router
+  .route("/deleteMe")
+  .delete(authController.protect, userController.deleteMe);
 
 module.exports = router;
