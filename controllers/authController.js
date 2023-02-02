@@ -1,6 +1,7 @@
 // importing files
 const catchAsyncError = include("utils/catchAsyncError");
 const User = include("models/user");
+const AppError = include("utils/appError");
 
 // importing modules
 const jwt = require("jsonwebtoken");
@@ -42,8 +43,8 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
+// SIGNUP
 exports.signup = catchAsyncError(async (req, res, next) => {
-  console.log(req.body);
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -51,5 +52,28 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     confirmPassword: req.body.confirmPassword,
   });
 
+  // response cookie and token
   createSendToken(newUser, 201, res);
+});
+
+// LOGIN
+exports.login = catchAsyncError(async (req, res, next) => {
+  const { email, password } = { ...req.body };
+
+  // 1. checking if email or password is empty
+  if (!email || !password) {
+    return next(new AppError("Email or Password undefined!", 400));
+  }
+
+  // 2. checking if email exits and checking password
+  const currentUser = await User.findOne({ email: email }).select("+password");
+  if (
+    !currentUser ||
+    !(await currentUser.checkPassword(password, currentUser.password))
+  ) {
+    return next(new AppError("Email or Password incorrect!", 404));
+  }
+
+  // 3. if everything is find send response token
+  createSendToken(currentUser, 201, res);
 });
