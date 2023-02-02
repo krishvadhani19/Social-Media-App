@@ -1,5 +1,5 @@
 // importing files
-// const userController = include("controllers/userController");
+const userController = include("controllers/userController");
 const authController = include("controllers/authController");
 
 // importing modules
@@ -11,5 +11,10 @@ const router = express.Router({ mergeParams: true });
 // Authentication
 router.route("/signup").post(authController.signup);
 router.route("/login").post(authController.login);
+
+// Self Update and Delete
+router
+  .route("/updateMe")
+  .patch(authController.protect, userController.updateMe);
 
 module.exports = router;

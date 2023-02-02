@@ -39,6 +39,11 @@ let userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
 });
 
 // Hashing the password before saving
