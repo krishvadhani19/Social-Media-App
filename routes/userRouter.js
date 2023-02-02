@@ -38,4 +38,12 @@ router
     adminController.createNewUser
   );
 
+router
+  .route("/deleteUser/:id")
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin"),
+    adminController.deleteUser
+  );
+
 module.exports = router;
