@@ -30,4 +30,12 @@ router
     adminController.getAllUsers
   );
 
+router
+  .route("/createNewUser")
+  .post(
+    authController.protect,
+    authController.restrictTo("admin"),
+    adminController.createNewUser
+  );
+
 module.exports = router;
