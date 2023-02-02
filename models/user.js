@@ -75,5 +75,11 @@ userSchema.methods.checkPassword = async function (
   return await bcrypt.compare(inputPassword, userPassword);
 };
 
+// only selecting the active users
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
 const User = mongoose.model("User", userSchema);
 module.exports = User;

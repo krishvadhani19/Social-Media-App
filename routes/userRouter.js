@@ -1,6 +1,7 @@
 // importing files
 const userController = include("controllers/userController");
 const authController = include("controllers/authController");
+const adminController = include("controllers/adminController");
 
 // importing modules
 const express = require("express");
@@ -19,5 +20,14 @@ router
 router
   .route("/deleteMe")
   .delete(authController.protect, userController.deleteMe);
+
+// Admin Operations
+router
+  .route("/getAllUsers")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin"),
+    adminController.getAllUsers
+  );
 
 module.exports = router;
