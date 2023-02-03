@@ -46,4 +46,12 @@ router
     adminController.deleteUser
   );
 
+router
+  .route("/updateUser/:id")
+  .patch(
+    authController.protect,
+    authController.restrictTo("admin"),
+    adminController.updateUser
+  );
+
 module.exports = router;

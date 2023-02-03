@@ -43,3 +43,18 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
 
   responseHandler(res, "success", 204, user);
 });
+
+// update User
+exports.updateUser = catchAsyncError(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  // checking is user exists
+  if (!user) {
+    return next(new AppError("User does not exist", 404));
+  }
+
+  responseHandler(res, "success", 201, user);
+});
