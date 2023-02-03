@@ -31,6 +31,14 @@ router
   );
 
 router
+  .route("/getOne/:id")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin"),
+    adminController.getOne
+  );
+
+router
   .route("/createNewUser")
   .post(
     authController.protect,

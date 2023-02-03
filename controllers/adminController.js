@@ -12,6 +12,20 @@ exports.getAllUsers = catchAsyncError(async (req, res, next) => {
   responseHandler(res, "success", 200, allUsers);
 });
 
+// get a User
+exports.getOne = catchAsyncError(async (req, res, next) => {
+  // fetching user from db
+  const user = await User.findById(req.params.id);
+
+  // if user does not exist return error
+  if (!user) {
+    return next(new AppError("User not found!", 404));
+  }
+
+  // return success response
+  responseHandler(res, "success", 200, allUsers);
+});
+
 // create one
 exports.createNewUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password, confirmPassword, role } = { ...req.body };
