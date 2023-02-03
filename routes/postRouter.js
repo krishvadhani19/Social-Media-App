@@ -17,4 +17,9 @@ router
     postController.createNewPost
   );
 
+// get all posts
+router
+  .route("/getAllMyPosts")
+  .get(authController.protect, postController.getAllMyPosts);
+
 module.exports = router;
