@@ -3,10 +3,8 @@ const express = require("express");
 
 // importing files
 const userRouter = include("routes/userRouter");
-// const commentRouter = include("routes/commentRouter");
+const commentRouter = include("routes/commentRouter");
 // const tagRouter = include("routes/tagRouter");
-
-// importing files
 const AppError = include("utils/appError");
 // const globalErrorHandler = include("utils/errorHandler");
 
@@ -21,7 +19,7 @@ app.use(express.json());
 // Routes Middleware
 app.use("/api/v1/users", userRouter);
 // app.use("/api/v1/posts", postRouter);
-// app.use("/api/v1/comments", commentRouter);
+app.use("/api/v1/comments", commentRouter);
 // app.use("/api/v1/tags", tagRouter);
 
 // Neither of the routes match
