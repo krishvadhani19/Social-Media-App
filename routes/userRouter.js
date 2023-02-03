@@ -1,7 +1,7 @@
 // importing files
-const userController = include("controllers/userController");
+const userController = include("controllers/userCRUD/userController");
 const authController = include("controllers/authController");
-const adminController = include("controllers/adminController");
+const adminController = include("controllers/userCRUD/adminController");
 
 // importing modules
 const express = require("express");

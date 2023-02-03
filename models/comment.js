@@ -11,11 +11,10 @@ let commentSchema = new mongoose.Schema(
       default: Date.now(),
       select: false,
     },
-    // post: {
-    //   type: mongoose.Schema.ObjectId,
-    //   ref: "Post",
-    //   required: [true, "A comment must have post to which it is done."],
-    // },
+    post: {
+      type: mongoose.Schema.ObjectId,
+      required: [true, "A comment must have post to which it is done."],
+    },
     user: {
       type: mongoose.Schema.ObjectId,
       required: [true, "A comment must be belong to a user."],
