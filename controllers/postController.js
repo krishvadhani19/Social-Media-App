@@ -28,17 +28,6 @@ exports.createNewPost = catchAsyncError(async (req, res, next) => {
 
 // =================================================================================================
 
-// Get all posts of the user
-exports.getAllMyPosts = catchAsyncError(async (req, res, next) => {
-  // fetching posts from db
-  const allPosts = await Post.find({ user: req.user.id });
-
-  // sending response
-  responseHandler(res, "success", 200, allPosts);
-});
-
-// =================================================================================================
-
 // delete post
 exports.deletePost = catchAsyncError(async (req, res, next) => {
   // check if post exists or not
@@ -64,3 +53,15 @@ exports.deletePost = catchAsyncError(async (req, res, next) => {
 });
 
 // =================================================================================================
+
+// Get all posts of the user
+exports.getAllMyPosts = catchAsyncError(async (req, res, next) => {
+  // fetching posts from db
+  const allPosts = await Post.find({ user: req.user.id });
+
+  // sending response
+  responseHandler(res, "success", 200, allPosts);
+});
+
+// =================================================================================================
+
