@@ -23,7 +23,7 @@ exports.getOne = catchAsyncError(async (req, res, next) => {
   }
 
   // return success response
-  responseHandler(res, "success", 200, allUsers);
+  responseHandler(res, "success", 200, user);
 });
 
 // create one
