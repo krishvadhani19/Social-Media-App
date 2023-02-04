@@ -13,6 +13,7 @@ let commentSchema = new mongoose.Schema(
     },
     post: {
       type: mongoose.Schema.ObjectId,
+      ref: "Post",
       required: [true, "A comment must have post to which it is done."],
     },
     user: {

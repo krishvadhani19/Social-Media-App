@@ -32,4 +32,12 @@ router
 router
   .route("/deleteMyPost/:postId")
   .delete(authController.protect, postController.deleteMyPost);
+
+// =================================================================================================
+
+// Get a post
+router
+  .route("/getAPost/:postId")
+  .get(authController.protect, postController.getAPost);
+
 module.exports = router;

@@ -64,3 +64,16 @@ exports.getAllMyPosts = catchAsyncError(async (req, res, next) => {
 });
 
 // =================================================================================================
+
+// get a post
+exports.getAPost = catchAsyncError(async (req, res, next) => {
+  // fetching post from db
+  const post = await Post.findById(req.params.postId);
+
+  // post exits or not
+  if (!post) {
+    return next(new AppError("Post not found!", 404));
+  }
+
+  responseHandler(res, "success", 200, post);
+});
