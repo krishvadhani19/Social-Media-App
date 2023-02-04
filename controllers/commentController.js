@@ -1,6 +1,7 @@
 // importing files
 const catchAsyncError = include("utils/catchAsyncError");
 const Comment = include("models/comment");
+const Post = include("models/post");
 const responseHandler = include("utils/responseHandler");
 const AppError = include("utils/appError");
 
@@ -36,3 +37,32 @@ exports.getPostComments = catchAsyncError(async (req, res, next) => {
 });
 
 // =================================================================================================
+
+exports.deletePostComment = catchAsyncError(async (req, res, next) => {
+  // find the comment
+  const comment = await Comment.findById(req.params.commentId);
+
+  // return error of comment does not exist
+  if (!comment) {
+    return next(new AppError("Comment does not exist!", 404));
+  }
+
+  // fetching the post on which the comment is made
+  const post = await Post.findById(req.params.postId);
+
+  // only the owner of the comment || owner of that post can delete the comment
+  if (
+    comment.user.toString() !== req.user.id.toString() &&
+    req.user.id.toString() !== post.user.toString()
+  ) {
+    return next(
+      new AppError("You do not have the permission to delete the comment!", 403)
+    );
+  }
+
+  // deleting the comment
+  await Comment.findByIdAndDelete(req.params.commentId);
+
+  // sending the response
+  responseHandler(res, "success", 204, comment);
+});
