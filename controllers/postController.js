@@ -29,9 +29,9 @@ exports.createNewPost = catchAsyncError(async (req, res, next) => {
 // =================================================================================================
 
 // delete post
-exports.deletePost = catchAsyncError(async (req, res, next) => {
+exports.deleteMyPost = catchAsyncError(async (req, res, next) => {
   // check if post exists or not
-  const post = await Post.findById(req.params.id);
+  const post = await Post.findById(req.params.postId);
 
   // retur error if post does not exist
   if (!post) {
@@ -39,14 +39,14 @@ exports.deletePost = catchAsyncError(async (req, res, next) => {
   }
 
   // check if the post belongs to the user himself
-  if (req.user.id !== post.user) {
+  if (req.user.id.toString() !== post.user.toString()) {
     return next(
       new AppError("You do not have the permission to delete the post!", 400)
     );
   }
 
   // delete the post
-  await Post.findByIdAndDelete(req.params.id);
+  await Post.findByIdAndDelete(req.params.postId);
 
   // send response
   responseHandler(res, "success", 204, post);
@@ -64,4 +64,3 @@ exports.getAllMyPosts = catchAsyncError(async (req, res, next) => {
 });
 
 // =================================================================================================
-

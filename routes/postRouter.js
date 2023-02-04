@@ -8,6 +8,8 @@ const express = require("express");
 // creating the router
 const router = express.Router({ mergeParams: true });
 
+// =================================================================================================
+
 // create new post
 router
   .route("/createNewPost")
@@ -17,9 +19,17 @@ router
     postController.createNewPost
   );
 
+// =================================================================================================
+
 // get all posts
 router
   .route("/getAllMyPosts")
   .get(authController.protect, postController.getAllMyPosts);
 
+// =================================================================================================
+
+// delete My post
+router
+  .route("/deleteMyPost/:postId")
+  .delete(authController.protect, postController.deleteMyPost);
 module.exports = router;
