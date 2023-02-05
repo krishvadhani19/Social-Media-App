@@ -1,5 +1,3 @@
-const { update } = require("../../models/user");
-
 // importing files
 const User = include("models/user");
 const catchAsyncError = include("utils/catchAsyncError");
@@ -55,10 +53,16 @@ exports.followUser = catchAsyncError(async (req, res, next) => {
     return next(new AppError("Already a follower!", 400));
   }
 
-  // appending the user to
+  // update the 'followers' of the user
   user.followers.push(req.user.id);
 
-  // saving the updated user
+  // update the 'following' of the req.user
+  req.user.following.push(req.params.userId);
+
+  // saving the req.user
+  await req.user.save();
+
+  // saving the user
   await user.save();
 
   // sending response
