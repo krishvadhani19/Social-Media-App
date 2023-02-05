@@ -44,6 +44,8 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
+// =================================================================================================
+
 // SIGNUP
 exports.signup = catchAsyncError(async (req, res, next) => {
   // check if the user already exists or not
@@ -62,6 +64,8 @@ exports.signup = catchAsyncError(async (req, res, next) => {
   // response cookie and token
   createSendToken(newUser, 201, res);
 });
+
+// =================================================================================================
 
 // LOGIN
 exports.login = catchAsyncError(async (req, res, next) => {
@@ -84,6 +88,8 @@ exports.login = catchAsyncError(async (req, res, next) => {
   // 3. if everything is find send response token
   createSendToken(currentUser, 201, res);
 });
+
+// =================================================================================================
 
 // PROTECT
 // to verify user before performing any operation
@@ -117,6 +123,8 @@ exports.protect = catchAsyncError(async (req, res, next) => {
   next();
 });
 
+// =================================================================================================
+
 // Retrict the operations restricted to admin
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
@@ -132,3 +140,20 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+// =================================================================================================
+
+// FORGOT PASSWORD
+exports.forgotPassword = catchAsyncError(async (req, res, next) => {
+  // find the user with email
+  const user = await User.findOne({ email: email });
+
+  // does user exists or not
+  if (!user) {
+    return next(new AppError("User does not exist!", 404));
+  }
+
+  // creating resetToken and storing the hashed in the database
+  // the resetToken will be sent to User via email
+  const resetToken = await user.createPasswordResetToken();
+});

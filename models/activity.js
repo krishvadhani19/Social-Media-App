@@ -28,14 +28,14 @@ let activitySchema = new mongoose.Schema(
   }
 );
 
-// referencing comments related to the post
+// virtul property "followers" from 'User'
 activitySchema.virtual("followers", {
   ref: "User",
   foreignField: "following._id",
   localField: "user",
 });
 
-// Poulating comments
+// Poulating followers
 activitySchema.pre(/^find/, function (next) {
   this.populate({
     path: "followers",

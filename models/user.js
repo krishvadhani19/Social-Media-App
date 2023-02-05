@@ -2,6 +2,7 @@
 const validator = require("validator");
 const { default: mongoose } = require("mongoose");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 let userSchema = new mongoose.Schema(
   {
@@ -55,6 +56,12 @@ let userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    passwordResetToken: {
+      type: String,
+    },
+    passwordResetExpires: {
+      type: Date,
+    },
     active: {
       type: Boolean,
       default: true,
@@ -68,6 +75,8 @@ let userSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+// =================================================================================================
 
 // Hashing the password before saving
 userSchema.pre("save", async function (next) {
@@ -85,6 +94,16 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// =================================================================================================
+
+// only selecting the active users
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
+// =================================================================================================
+
 // compare hashed and input password
 userSchema.methods.checkPassword = async function (
   inputPassword,
@@ -93,11 +112,25 @@ userSchema.methods.checkPassword = async function (
   return await bcrypt.compare(inputPassword, userPassword);
 };
 
-// only selecting the active users
-userSchema.pre(/^find/, function (next) {
-  this.find({ active: { $ne: false } });
-  next();
-});
+// =================================================================================================
+
+userSchema.methods.createPasswordResetToken = async function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  // storing resetToken in db
+  // hashing it before stored
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  // set password expires to 10 mins
+  this.passwordResetExpires = Date.now() + 60 * 10 * 1000;
+
+  return resetToken;
+};
+
+// =================================================================================================
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
