@@ -44,13 +44,19 @@ exports.deleteMe = catchAsyncError(async (req, res, next) => {
   responseHandler(res, "success", 204, user);
 });
 
+// follow user
 exports.followUser = catchAsyncError(async (req, res, next) => {
   // fetch the user
   const user = await User.findById(req.params.userId);
 
+  // if user does not exist
+  if (!user) {
+    return next(new AppError("User does not exist!", 404));
+  }
+
   // if already a follower then return error
   if (user.followers.includes(req.user.id)) {
-    return next(new AppError("Already a follower!", 400));
+    return next(new AppError("You are following the person already!", 400));
   }
 
   // update the 'followers' of the user
@@ -66,5 +72,41 @@ exports.followUser = catchAsyncError(async (req, res, next) => {
   await user.save();
 
   // sending response
-  responseHandler(res, "success", 200, user);
+  responseHandler(res, "success", 200, req.user);
+});
+
+// unfollow the person
+exports.unfollowUser = catchAsyncError(async (req, res, next) => {
+  // fetch the user
+  const user = await User.findById(req.params.userId);
+
+  // if user does not exist
+  if (!user) {
+    return next(new AppError("User does not exist!", 404));
+  }
+
+  // if already a follower then return error
+  if (!user.followers.includes(req.user.id)) {
+    return next(
+      new AppError(
+        "You are not following the person. You cannot unfollow it.!",
+        400
+      )
+    );
+  }
+
+  // update the 'followers' of the user
+  user.followers.remove(req.user.id);
+
+  // update the 'following' of the req.user
+  req.user.following.remove(req.params.userId);
+
+  // saving the req.user
+  await req.user.save();
+
+  // saving the user
+  await user.save();
+
+  // sending response
+  responseHandler(res, "success", 204, req.user);
 });

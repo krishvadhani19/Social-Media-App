@@ -70,4 +70,12 @@ router
     userController.followUser
   );
 
+router
+  .route("/unfollowUser/:userId")
+  .post(
+    authController.protect,
+    authController.restrictTo("user"),
+    userController.unfollowUser
+  );
+
 module.exports = router;
