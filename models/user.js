@@ -40,16 +40,16 @@ let userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
-    followers: {
-      type: [mongoose.Schema.ObjectId],
-      default: [],
-      select: false,
-    },
-    following: {
-      type: [mongoose.Schema.ObjectId],
-      default: [],
-      select: false,
-    },
+    followers: [
+      {
+        id: { type: mongoose.Schema.ObjectId, select: false },
+      },
+    ],
+    following: [
+      {
+        id: { type: mongoose.Schema.ObjectId, ref: "Activity", select: false },
+      },
+    ],
     role: {
       type: String,
       enum: ["user", "admin"],
