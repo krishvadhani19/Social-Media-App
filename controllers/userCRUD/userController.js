@@ -1,6 +1,10 @@
+const { update } = require("../../models/user");
+
 // importing files
 const User = include("models/user");
 const catchAsyncError = include("utils/catchAsyncError");
+const responseHandler = include("utils/responseHandler");
+const AppError = include("utils/AppError");
 
 // user updating credentials
 exports.updateMe = catchAsyncError(async (req, res, next) => {
@@ -28,10 +32,7 @@ exports.updateMe = catchAsyncError(async (req, res, next) => {
   );
 
   // send response
-  res.status(200).json({
-    status: "success",
-    user: updatedUser,
-  });
+  responseHandler(res, "success", 200, updatedUser);
 });
 
 // user deleting its own profile
@@ -42,8 +43,24 @@ exports.deleteMe = catchAsyncError(async (req, res, next) => {
   });
 
   // sending response after deleting
-  res.status(204).json({
-    status: "success",
-    user: user,
-  });
+  responseHandler(res, "success", 204, user);
+});
+
+exports.followUser = catchAsyncError(async (req, res, next) => {
+  // fetch the user
+  const user = await User.findById(req.params.userId);
+
+  // if already a follower then return error
+  if (user.followers.includes(req.user.id)) {
+    return next(new AppError("Already a follower!", 400));
+  }
+
+  // appending the user to
+  user.followers.push(req.user.id);
+
+  // saving the updated user
+  await user.save();
+
+  // sending response
+  responseHandler(res, "success", 200, user);
 });

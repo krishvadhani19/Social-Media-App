@@ -62,4 +62,12 @@ router
     adminController.updateUser
   );
 
+router
+  .route("/followUser/:userId")
+  .post(
+    authController.protect,
+    authController.restrictTo("user"),
+    userController.followUser
+  );
+
 module.exports = router;
