@@ -43,10 +43,12 @@ let userSchema = new mongoose.Schema(
     followers: {
       type: [mongoose.Schema.ObjectId],
       default: [],
+      select: false,
     },
     following: {
       type: [mongoose.Schema.ObjectId],
       default: [],
+      select: false,
     },
     role: {
       type: String,
