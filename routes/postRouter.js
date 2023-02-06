@@ -40,4 +40,11 @@ router
   .route("/getAPost/:postId")
   .get(authController.protect, postController.getAPost);
 
+// =================================================================================================
+
+// Like a post
+router
+  .route("/likeAPost/:postId")
+  .patch(authController.protect, postController.likeAPost);
+
 module.exports = router;

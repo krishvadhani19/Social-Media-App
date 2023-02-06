@@ -28,6 +28,12 @@ let postSchema = new mongoose.Schema(
       type: [mongoose.Schema.ObjectId],
     },
 
+    likedBy: [
+      {
+        id: { type: mongoose.Schema.ObjectId },
+      },
+    ],
+
     createdAt: {
       type: Date,
       default: Date.now(),

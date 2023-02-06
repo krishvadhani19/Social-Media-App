@@ -77,3 +77,35 @@ exports.getAPost = catchAsyncError(async (req, res, next) => {
 
   responseHandler(res, "success", 200, post);
 });
+
+// =================================================================================================
+
+// like a post
+
+exports.likeAPost = catchAsyncError(async (req, res, next) => {
+  // fetching post from db
+  const post = await Post.findById(req.params.postId);
+
+  // post exits or not
+  if (!post) {
+    return next(new AppError("Post not found!", 404));
+  }
+
+  // already liked
+  if (
+    post.likedBy.filter((ele) => {
+      return ele._id.toString() === req.user.id.toString();
+    }).length !== 0
+  ) {
+    return next(new AppError("Post already liked. Cannot like again", 400));
+  }
+
+  // liking a post
+  post.likesCount += 1;
+  post.likedBy.push(req.user.id);
+
+  //
+  await post.save();
+
+  responseHandler(res, "success", 200, post);
+});
