@@ -20,3 +20,11 @@ router
   .route("/createActivity")
   .post(authController.protect, activityController.createActivity);
 module.exports = router;
+
+// =================================================================================================
+
+router
+  .route("/getLikedPosts")
+  .get(authController.protect, activityController.getLikedPosts);
+
+module.exports = router;

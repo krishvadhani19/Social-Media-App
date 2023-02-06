@@ -30,7 +30,7 @@ let postSchema = new mongoose.Schema(
 
     likedBy: [
       {
-        id: { type: mongoose.Schema.ObjectId },
+        id: { type: mongoose.Schema.ObjectId, ref: "Activity" },
       },
     ],
 

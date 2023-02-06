@@ -43,5 +43,20 @@ activitySchema.pre(/^find/, function (next) {
   next();
 });
 
+// view liked posts
+activitySchema.virtual("getLikedPosts", {
+  ref: "Post",
+  foreignField: "likedBy._id",
+  localField: "user",
+});
+
+// Poulating followers
+activitySchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "getLikedPosts",
+  });
+  next();
+});
+
 const Activity = mongoose.model("Activity", activitySchema);
 module.exports = Activity;
