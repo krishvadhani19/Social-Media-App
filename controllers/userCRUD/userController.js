@@ -55,7 +55,11 @@ exports.followUser = catchAsyncError(async (req, res, next) => {
   }
 
   // if already a follower then return error
-  if (user.followers.includes(req.user.id)) {
+  if (
+    user.followers.filter((ele) => {
+      return ele._id.toString() === req.user.id.toString();
+    }).length !== 0
+  ) {
     return next(new AppError("You are following the person already!", 400));
   }
 
@@ -86,7 +90,11 @@ exports.unfollowUser = catchAsyncError(async (req, res, next) => {
   }
 
   // if already a follower then return error
-  if (!user.followers.includes(req.user.id)) {
+  if (
+    !user.followers.filter((ele) => {
+      return ele._id.toString() === req.user.id.toString();
+    }).length === 0
+  ) {
     return next(
       new AppError(
         "You are not following the person. You cannot unfollow it.!",
