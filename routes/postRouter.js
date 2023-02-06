@@ -47,4 +47,11 @@ router
   .route("/likeAPost/:postId")
   .patch(authController.protect, postController.likeAPost);
 
+// =================================================================================================
+
+// unLike a post
+router
+  .route("/unlikeAPost/:postId")
+  .patch(authController.protect, postController.unlikeAPost);
+
 module.exports = router;
