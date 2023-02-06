@@ -9,9 +9,13 @@ const express = require("express");
 // creating the router
 const router = express.Router({ mergeParams: true });
 
+// ==============================================================================================
+
 // Authentication
 router.route("/signup").post(authController.signup);
 router.route("/login").post(authController.login);
+
+// ==============================================================================================
 
 // Self Update and Delete
 router
@@ -20,6 +24,8 @@ router
 router
   .route("/deleteMe")
   .delete(authController.protect, userController.deleteMe);
+
+// ==============================================================================================
 
 // Admin Operations
 router
@@ -62,6 +68,9 @@ router
     adminController.updateUser
   );
 
+// ==============================================================================================
+// follow and unfollow
+
 router
   .route("/followUser/:userId")
   .post(
@@ -77,5 +86,11 @@ router
     authController.restrictTo("user"),
     userController.unfollowUser
   );
+
+// ==============================================================================================
+
+router
+  .route("/getLikedPosts")
+  .get(authController.protect, userController.getLikedPosts);
 
 module.exports = router;

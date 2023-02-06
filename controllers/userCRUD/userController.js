@@ -4,6 +4,8 @@ const catchAsyncError = include("utils/catchAsyncError");
 const responseHandler = include("utils/responseHandler");
 const AppError = include("utils/AppError");
 
+// =================================================================================================
+
 // user updating credentials
 exports.updateMe = catchAsyncError(async (req, res, next) => {
   // return error if user tries to update password using this route
@@ -33,6 +35,8 @@ exports.updateMe = catchAsyncError(async (req, res, next) => {
   responseHandler(res, "success", 200, updatedUser);
 });
 
+// =================================================================================================
+
 // user deleting its own profile
 exports.deleteMe = catchAsyncError(async (req, res, next) => {
   // fetch user from db
@@ -43,6 +47,8 @@ exports.deleteMe = catchAsyncError(async (req, res, next) => {
   // sending response after deleting
   responseHandler(res, "success", 204, user);
 });
+
+// =================================================================================================
 
 // follow user
 exports.followUser = catchAsyncError(async (req, res, next) => {
@@ -78,6 +84,8 @@ exports.followUser = catchAsyncError(async (req, res, next) => {
   // sending response
   responseHandler(res, "success", 200, req.user);
 });
+
+// =================================================================================================
 
 // unfollow the person
 exports.unfollowUser = catchAsyncError(async (req, res, next) => {
@@ -118,3 +126,14 @@ exports.unfollowUser = catchAsyncError(async (req, res, next) => {
   // sending response
   responseHandler(res, "success", 204, req.user);
 });
+
+// =================================================================================================
+
+exports.getLikedPosts = catchAsyncError(async (req, res, next) => {
+  // make sure this request is made by the user himself
+  const user = await User.findById(req.user.id);
+
+  responseHandler(res, "success", 200, user.getLikedPosts);
+});
+
+// =================================================================================================

@@ -48,7 +48,7 @@ let userSchema = new mongoose.Schema(
     ],
     following: [
       {
-        id: { type: mongoose.Schema.ObjectId, ref: "Activity", select: false },
+        id: { type: mongoose.Schema.ObjectId, select: false },
       },
     ],
     role: {
@@ -129,6 +129,23 @@ userSchema.methods.createPasswordResetToken = async function () {
 
   return resetToken;
 };
+
+// =================================================================================================
+
+// virtual likedpost from 'Posts'
+userSchema.virtual("getLikedPosts", {
+  ref: "Post",
+  foreignField: "likedBy._id",
+  localField: "_id",
+});
+
+// Poulating getLikedPosts
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "getLikedPosts",
+  });
+  next();
+});
 
 // =================================================================================================
 
