@@ -2,6 +2,8 @@
 const userController = include("controllers/userCRUD/userController");
 const authController = include("controllers/authController");
 const adminController = include("controllers/userCRUD/adminController");
+const postController = include("controllers/postController");
+const commentController = include("controllers/commentController");
 
 // importing modules
 const express = require("express");
@@ -26,7 +28,12 @@ router
   .patch(authController.protect, userController.updateMe);
 router
   .route("/deleteMe")
-  .delete(authController.protect, userController.deleteMe);
+  .delete(
+    authController.protect,
+    userController.deleteMe,
+    postController.deleteAllMyPosts,
+    commentController.deleteAllMyComments
+  );
 
 // ==============================================================================================
 

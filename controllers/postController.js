@@ -1,6 +1,7 @@
 // importing files
 const catchAsyncError = include("utils/catchAsyncError");
 const Post = include("models/post");
+const Comment = include("models/comment");
 const responseHandler = include("utils/responseHandler");
 const AppError = include("utils/appError");
 
@@ -147,4 +148,13 @@ exports.unlikeAPost = catchAsyncError(async (req, res, next) => {
   await post.save();
 
   responseHandler(res, "success", 200, post);
+});
+
+// =================================================================================================
+
+exports.deleteAllMyPosts = catchAsyncError(async (req, res, next) => {
+  const query1 = { user: req.user.id };
+  await Post.deleteMany(query1);
+
+  next();
 });

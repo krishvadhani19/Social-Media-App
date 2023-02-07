@@ -68,11 +68,20 @@ exports.deletePostComment = catchAsyncError(async (req, res, next) => {
 });
 
 // =================================================================================================
-
+// if post is deleted
 exports.deleteAllPostComments = catchAsyncError(async (req, res, next) => {
   // find all comments
   const query = { post: req.params.postId };
 
+  await Comment.deleteMany(query);
+
+  next();
+});
+
+// =================================================================================================
+// if user is deleted
+exports.deleteAllMyComments = catchAsyncError(async (req, res, next) => {
+  const query = { user: req.user.id };
   await Comment.deleteMany(query);
 
   next();
