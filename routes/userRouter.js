@@ -20,6 +20,8 @@ router
   .route("/updatePassword")
   .patch(authController.protect, authController.updatePassword);
 
+router.route("/logout").get(authController.protect, authController.logout);
+
 // ==============================================================================================
 
 // Self Update and Delete
