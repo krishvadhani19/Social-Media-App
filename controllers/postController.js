@@ -51,6 +51,8 @@ exports.deleteMyPost = catchAsyncError(async (req, res, next) => {
 
   // send response
   responseHandler(res, "success", 204, post);
+
+  next();
 });
 
 // =================================================================================================

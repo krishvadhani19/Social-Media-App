@@ -66,3 +66,14 @@ exports.deletePostComment = catchAsyncError(async (req, res, next) => {
   // sending the response
   responseHandler(res, "success", 204, comment);
 });
+
+// =================================================================================================
+
+exports.deleteAllPostComments = catchAsyncError(async (req, res, next) => {
+  // find all comments
+  const query = { post: req.params.postId };
+
+  await Comment.deleteMany(query);
+
+  next();
+});

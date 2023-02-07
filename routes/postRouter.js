@@ -1,6 +1,7 @@
 // importing files
 const authController = include("controllers/authController");
 const postController = include("controllers/postController");
+const commentController = include("controllers/commentController");
 
 // importing modules
 const express = require("express");
@@ -31,7 +32,11 @@ router
 // delete My post
 router
   .route("/deleteMyPost/:postId")
-  .delete(authController.protect, postController.deleteMyPost);
+  .delete(
+    authController.protect,
+    postController.deleteMyPost,
+    commentController.deleteAllPostComments
+  );
 
 // =================================================================================================
 
