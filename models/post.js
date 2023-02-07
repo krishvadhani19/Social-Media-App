@@ -2,10 +2,12 @@ const { default: mongoose } = require("mongoose");
 
 let postSchema = new mongoose.Schema(
   {
-    img: {
-      type: [String],
-      required: [true, "A post must have atleat 1 image"],
-    },
+    img: [
+      {
+        type: String,
+        required: [true, "A post must have atleat 1 image"],
+      },
+    ],
 
     caption: {
       type: String,
@@ -16,6 +18,7 @@ let postSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       required: [true, "a post will be done by a user"],
+      unique: false,
     },
 
     likesCount: {

@@ -91,9 +91,9 @@ exports.login = catchAsyncError(async (req, res, next) => {
 
 // =================================================================================================
 
-exports.logout = (req, res, next) => {
+exports.logout = catchAsyncError((req, res, next) => {
   const cookieOptions = {
-    expires: new Date(Date.now() + 3 * 1000),
+    expires: new Date(Date.now() + 1),
 
     // cannot be accessed or modified in any way by the browser
     httpOnly: true,
@@ -102,8 +102,9 @@ exports.logout = (req, res, next) => {
   res.cookie("jwt", "loggedOut", cookieOptions);
   res.status(200).json({
     status: "success",
+    token: "loggedOut",
   });
-};
+});
 
 // =================================================================================================
 
