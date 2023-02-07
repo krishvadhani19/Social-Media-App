@@ -93,4 +93,8 @@ router
   .route("/getLikedPosts")
   .get(authController.protect, userController.getLikedPosts);
 
+router
+  .route("/getTaggedPosts")
+  .get(authController.protect, userController.getTaggedPosts);
+
 module.exports = router;

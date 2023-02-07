@@ -20,6 +20,7 @@ exports.createNewPost = catchAsyncError(async (req, res, next) => {
     img: req.body.img,
     caption: req.body.caption,
     user: req.user.id,
+    tags: req.body.tags,
   });
 
   // sending the response

@@ -149,5 +149,22 @@ userSchema.pre(/^find/, function (next) {
 
 // =================================================================================================
 
+// virtual likedpost from 'Posts'
+userSchema.virtual("getTaggedPosts", {
+  ref: "Post",
+  foreignField: "tags._id",
+  localField: "_id",
+});
+
+// Poulating getLikedPosts
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "getTaggedPosts",
+  });
+  next();
+});
+
+// =================================================================================================
+
 const User = mongoose.model("User", userSchema);
 module.exports = User;

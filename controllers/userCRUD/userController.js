@@ -137,3 +137,9 @@ exports.getLikedPosts = catchAsyncError(async (req, res, next) => {
 });
 
 // =================================================================================================
+exports.getTaggedPosts = catchAsyncError(async (req, res, next) => {
+  // make sure this request is made by the user himself
+  const user = await User.findById(req.user.id);
+
+  responseHandler(res, "success", 200, user.getTaggedPosts);
+});

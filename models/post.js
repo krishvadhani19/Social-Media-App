@@ -24,9 +24,11 @@ let postSchema = new mongoose.Schema(
       default: 0,
     },
 
-    tags: {
-      type: [mongoose.Schema.ObjectId],
-    },
+    tags: [
+      {
+        id: { type: mongoose.Schema.ObjectId, ref: "User" },
+      },
+    ],
 
     likedBy: [
       {
