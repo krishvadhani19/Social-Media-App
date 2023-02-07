@@ -157,3 +157,30 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   // the resetToken will be sent to User via email
   const resetToken = await user.createPasswordResetToken();
 });
+
+// =================================================================================================
+
+// after login only you can update password
+exports.updatePassword = catchAsyncError(async (req, res, next) => {
+  // find user from database with password
+  const user = await User.findById(req.user.id).select("+password");
+
+  // compare entered password and the db password
+  if (!(await user.checkPassword(req.body.currentPassword, user.password))) {
+    return next(
+      new AppError(
+        "Your current password did not match. Please try again with correct password inorder to update your password.",
+        403
+      )
+    );
+  }
+
+  user.password = req.body.password;
+  user.confirmPassword = req.body.confirmPassword;
+
+  // updating the user with new password
+  await user.save();
+
+  //
+  createSendToken(user, 200, res);
+});

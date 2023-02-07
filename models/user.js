@@ -106,10 +106,10 @@ userSchema.pre(/^find/, function (next) {
 
 // compare hashed and input password
 userSchema.methods.checkPassword = async function (
-  inputPassword,
-  userPassword
+  currentEnteredPassword,
+  dbPassword
 ) {
-  return await bcrypt.compare(inputPassword, userPassword);
+  return await bcrypt.compare(currentEnteredPassword, dbPassword);
 };
 
 // =================================================================================================
