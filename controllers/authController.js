@@ -3,6 +3,7 @@ const catchAsyncError = include("utils/catchAsyncError");
 const sendEmail = include("utils/email");
 const User = include("models/user");
 const AppError = include("utils/appError");
+const crypto = require("crypto");
 
 // importing modules
 const jwt = require("jsonwebtoken");
@@ -212,7 +213,7 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     "host"
   )}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `Forgot your password? Submit a patch request with new Password and confirmPassword to: ${resetURL}. If you didn't forget your password, please ignore.`;
+  const message = `Forgot your password?\nSubmit a patch request with new Password and confirmPassword to:\n${resetURL}\nIf you didn't forget your password, please ignore.`;
 
   // 6.
   try {
