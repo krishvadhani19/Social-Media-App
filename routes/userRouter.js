@@ -6,6 +6,7 @@ const postController = include("controllers/postController");
 const commentController = include("controllers/commentController");
 const passwordController = include("controllers/passwordController");
 const followController = include("controllers/followController");
+const userAnalysisController = include("controllers/userAnalysisController");
 
 // importing modules
 const express = require("express");
@@ -21,7 +22,7 @@ router.route("/login").post(authController.login);
 router.route("/logout").get(authController.protect, authController.logout);
 
 // ==============================================================================================
-
+// Password
 router
   .route("/updatePassword")
   .patch(authController.protect, passwordController.updatePassword);
@@ -32,7 +33,6 @@ router
   .patch(passwordController.resetPassword);
 
 // ==============================================================================================
-
 // Self Update and Delete
 router
   .route("/updateMe")
@@ -47,7 +47,6 @@ router
   );
 
 // ==============================================================================================
-
 // Admin Operations
 router
   .route("/getAllUsers")
@@ -91,7 +90,6 @@ router
 
 // ==============================================================================================
 // follow and unfollow
-
 router
   .route("/followUser/:userId")
   .post(
@@ -109,13 +107,23 @@ router
   );
 
 // ==============================================================================================
-
+// Get Posts
 router
   .route("/getLikedPosts")
-  .get(authController.protect, userController.getLikedPosts);
+  .get(authController.protect, userAnalysisController.getLikedPosts);
 
 router
   .route("/getTaggedPosts")
-  .get(authController.protect, userController.getTaggedPosts);
+  .get(authController.protect, userAnalysisController.getTaggedPosts);
+
+// ==============================================================================================
+//get active time of the user
+router
+  .route("/getActiveTime")
+  .get(authController.protect, userAnalysisController.getActiveTime);
+
+router
+  .route("/getTopActiveUsers")
+  .get(authController.protect, userAnalysisController.getTopActiveUsers);
 
 module.exports = router;

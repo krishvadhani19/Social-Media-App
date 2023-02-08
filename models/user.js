@@ -84,6 +84,8 @@ let userSchema = new mongoose.Schema(
   }
 );
 
+userSchema.index({ activeTime: -1 });
+
 // =================================================================================================
 
 // Hashing the password before saving

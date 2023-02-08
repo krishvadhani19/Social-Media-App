@@ -56,8 +56,8 @@ exports.getAPost = catchAsyncError(async (req, res, next) => {
 // =================================================================================================
 
 exports.deleteAllMyPosts = catchAsyncError(async (req, res, next) => {
-  const query1 = { user: req.user.id };
-  await Post.deleteMany(query1);
+  const query = { user: req.user.id };
+  await Post.deleteMany(query);
 
   next();
 });
