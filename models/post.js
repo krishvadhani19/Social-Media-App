@@ -18,7 +18,6 @@ let postSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       required: [true, "a post will be done by a user"],
-      unique: false,
     },
 
     likesCount: {

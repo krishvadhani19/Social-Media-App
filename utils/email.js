@@ -1,29 +1,35 @@
 // importing modules
 const nodemailer = require("nodemailer");
+const catchAsyncError = include("utils/catchAsyncError");
 
-const sendEmail = async (options) => {
+const sendEmail = catchAsyncError(async (options) => {
   // 1) Create a transporter
+
+  console.log("working till here");
   const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
+    service: "gmail",
     auth: {
-      email: process.env.EMAIL_USERNAME,
-      password: process.env.EMAIL_PASSWORD,
+      user: "krishvadhani7@gmail.com",
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
   // 2) define the mail options
   const mailOptions = {
-    from: "Krish Vadhani<krishvadhani7@gmail.com>",
+    from: "krishvadhani7@gmail.com",
     to: options.email,
     subject: options.subject,
     text: options.message,
-    // html
   };
 
-  console.log("Finding Error");
   // 3) actually send the mail
-  await transporter.sendMail(mailOptions);
-};
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log({ "Error!": error });
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+});
 
 module.exports = sendEmail;

@@ -6,7 +6,7 @@ const userRouter = include("routes/userRouter");
 const commentRouter = include("routes/commentRouter");
 const postRouter = include("routes/postRouter");
 const AppError = include("utils/appError");
-// const globalErrorHandler = include("utils/errorHandler");
+const globalErrorHandler = include("utils/errorHandler");
 
 // creating express app
 const app = express();
@@ -27,6 +27,6 @@ app.all("*", (req, res, next) => {
 });
 
 //Global Error Handler
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 module.exports = app;
