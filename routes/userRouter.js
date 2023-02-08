@@ -1,7 +1,7 @@
 // importing files
-const userController = include("controllers/userCRUD/userController");
+const userController = include("controllers/userController");
 const authController = include("controllers/authController");
-const adminController = include("controllers/userCRUD/adminController");
+const adminController = include("controllers/adminController");
 const postController = include("controllers/postController");
 const commentController = include("controllers/commentController");
 const passwordController = include("controllers/passwordController");
