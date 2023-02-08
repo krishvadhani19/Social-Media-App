@@ -1,6 +1,6 @@
-module.exports = (res, status, statusCode, data) => {
+module.exports = (res, statusCode, data) => {
   res.status(statusCode).json({
-    status: status,
+    status: "success",
     count: data.length,
     data: data,
   });

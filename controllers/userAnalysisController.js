@@ -8,7 +8,7 @@ exports.getLikedPosts = catchAsyncError(async (req, res, next) => {
   // make sure this request is made by the user himself
   const user = await User.findById(req.user.id);
 
-  responseHandler(res, "success", 200, user.getLikedPosts);
+  responseHandler(res, 200, user.getLikedPosts);
 });
 
 // =================================================================================================
@@ -16,7 +16,7 @@ exports.getTaggedPosts = catchAsyncError(async (req, res, next) => {
   // make sure this request is made by the user himself
   const user = await User.findById(req.user.id);
 
-  responseHandler(res, "success", 200, user.getTaggedPosts);
+  responseHandler(res, 200, user.getTaggedPosts);
 });
 
 // =================================================================================================
@@ -30,7 +30,7 @@ exports.getActiveTime = catchAsyncError(async (req, res, next) => {
     seconds: Number.parseInt((user.activeTime / 1000) % 60),
   };
 
-  responseHandler(res, "success", 200, data);
+  responseHandler(res, 200, data);
 });
 
 // =================================================================================================
@@ -39,7 +39,7 @@ exports.getTopActiveUsers = catchAsyncError(async (req, res, next) => {
     "name email activeTime"
   );
 
-  responseHandler(res, "success", 200, users);
+  responseHandler(res, 200, users);
 });
 
 // =================================================================================================

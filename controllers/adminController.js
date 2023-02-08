@@ -11,7 +11,7 @@ exports.getAllUsers = catchAsyncError(async (req, res, next) => {
   // fetching all data from db
   const allUsers = await User.find();
 
-  responseHandler(res, "success", 200, allUsers);
+  responseHandler(res, 200, allUsers);
 });
 
 // =================================================================================================
@@ -27,7 +27,7 @@ exports.getOne = catchAsyncError(async (req, res, next) => {
   }
 
   // return success response
-  responseHandler(res, "success", 200, user);
+  responseHandler(res, 200, user);
 });
 
 // =================================================================================================
@@ -50,7 +50,7 @@ exports.createNewUser = catchAsyncError(async (req, res, next) => {
     role: role,
   });
 
-  responseHandler(res, "success", 200, newUser);
+  responseHandler(res, 200, newUser);
 });
 
 // =================================================================================================
@@ -63,7 +63,7 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
     return next(new AppError("User does not exist", 404));
   }
 
-  responseHandler(res, "success", 204, user);
+  responseHandler(res, 204, user);
 });
 
 // =================================================================================================
@@ -80,5 +80,5 @@ exports.updateUser = catchAsyncError(async (req, res, next) => {
     return next(new AppError("User does not exist", 404));
   }
 
-  responseHandler(res, "success", 201, user);
+  responseHandler(res, 201, user);
 });

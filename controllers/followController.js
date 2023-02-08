@@ -36,7 +36,7 @@ exports.followUser = catchAsyncError(async (req, res, next) => {
   await user.save();
 
   // sending response
-  responseHandler(res, "success", 200, req.user);
+  responseHandler(res, 200, req.user);
 });
 
 // =================================================================================================
@@ -78,5 +78,5 @@ exports.unfollowUser = catchAsyncError(async (req, res, next) => {
   await user.save();
 
   // sending response
-  responseHandler(res, "success", 204, req.user);
+  responseHandler(res, 204, req.user);
 });

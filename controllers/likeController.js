@@ -32,7 +32,7 @@ exports.likeAPost = catchAsyncError(async (req, res, next) => {
   //
   await post.save();
 
-  responseHandler(res, "success", 200, post);
+  responseHandler(res, 200, post);
 });
 
 // =================================================================================================
@@ -68,5 +68,5 @@ exports.unlikeAPost = catchAsyncError(async (req, res, next) => {
   //
   await post.save();
 
-  responseHandler(res, "success", 200, post);
+  responseHandler(res, 200, post);
 });

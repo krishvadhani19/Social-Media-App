@@ -24,7 +24,7 @@ exports.createNewPost = catchAsyncError(async (req, res, next) => {
   });
 
   // sending the response
-  responseHandler(res, "success", 200, newPost);
+  responseHandler(res, 200, newPost);
 });
 
 // =================================================================================================
@@ -35,7 +35,7 @@ exports.getAllMyPosts = catchAsyncError(async (req, res, next) => {
   const allPosts = await Post.find({ user: req.user.id });
 
   // sending response
-  responseHandler(res, "success", 200, allPosts);
+  responseHandler(res, 200, allPosts);
 });
 
 // =================================================================================================
@@ -50,7 +50,7 @@ exports.getAPost = catchAsyncError(async (req, res, next) => {
     return next(new AppError("Post not found!", 404));
   }
 
-  responseHandler(res, "success", 200, post);
+  responseHandler(res, 200, post);
 });
 
 // =================================================================================================
@@ -85,7 +85,7 @@ exports.deleteMyPost = catchAsyncError(async (req, res, next) => {
   await Post.findByIdAndDelete(req.params.postId);
 
   // send response
-  responseHandler(res, "success", 204, post);
+  responseHandler(res, 204, post);
 
   next();
 });

@@ -22,7 +22,7 @@ exports.createNewComment = catchAsyncError(async (req, res, next) => {
   });
 
   // sending response token
-  responseHandler(res, "success", 200, newComment);
+  responseHandler(res, 200, newComment);
 });
 
 // =================================================================================================
@@ -33,7 +33,7 @@ exports.getPostComments = catchAsyncError(async (req, res, next) => {
   const comments = await Comment.find({ post: req.params.postId });
 
   // send response
-  responseHandler(res, "success", 200, comments);
+  responseHandler(res, 200, comments);
 });
 
 // =================================================================================================
@@ -64,7 +64,7 @@ exports.deletePostComment = catchAsyncError(async (req, res, next) => {
   await Comment.findByIdAndDelete(req.params.commentId);
 
   // sending the response
-  responseHandler(res, "success", 204, comment);
+  responseHandler(res, 204, comment);
 });
 
 // =================================================================================================

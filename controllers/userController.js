@@ -32,7 +32,7 @@ exports.updateMe = catchAsyncError(async (req, res, next) => {
   );
 
   // send response
-  responseHandler(res, "success", 200, updatedUser);
+  responseHandler(res, 200, updatedUser);
 });
 
 // =================================================================================================
@@ -43,6 +43,6 @@ exports.deleteMe = catchAsyncError(async (req, res, next) => {
   const user = await User.findByIdAndDelete(req.user.id);
 
   // sending response after deleting
-  responseHandler(res, "success", 204, user);
+  responseHandler(res, 204, user);
   next();
 });
