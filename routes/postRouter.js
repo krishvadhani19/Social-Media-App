@@ -2,6 +2,7 @@
 const authController = include("controllers/authController");
 const postController = include("controllers/postController");
 const commentController = include("controllers/commentController");
+const likeController = include("controllers/likeController");
 
 // importing modules
 const express = require("express");
@@ -50,13 +51,13 @@ router
 // Like a post
 router
   .route("/likeAPost/:postId")
-  .patch(authController.protect, postController.likeAPost);
+  .patch(authController.protect, likeController.likeAPost);
 
 // =================================================================================================
 
 // unLike a post
 router
   .route("/unlikeAPost/:postId")
-  .patch(authController.protect, postController.unlikeAPost);
+  .patch(authController.protect, likeController.unlikeAPost);
 
 module.exports = router;

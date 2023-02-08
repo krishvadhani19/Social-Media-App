@@ -51,6 +51,9 @@ let userSchema = new mongoose.Schema(
         id: { type: mongoose.Schema.ObjectId, select: false },
       },
     ],
+    activeTime: {
+      type: Number,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],
@@ -65,6 +68,11 @@ let userSchema = new mongoose.Schema(
     active: {
       type: Boolean,
       default: true,
+      select: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
       select: false,
     },
   },
@@ -128,6 +136,13 @@ userSchema.methods.createPasswordResetToken = async function () {
   this.passwordResetExpires = Date.now() + 60 * 10 * 1000;
 
   return resetToken;
+};
+
+// =================================================================================================
+
+userSchema.methods.endActiveTime = async function (time) {
+  this.activeTime = this.activeTime + (Date.now() - time);
+  console.log(this.activeTime);
 };
 
 // =================================================================================================

@@ -4,6 +4,8 @@ const catchAsyncError = include("utils/catchAsyncError");
 const responseHandler = include("utils/responseHandler");
 const AppError = include("utils/appError");
 
+// =================================================================================================
+
 // get all users
 exports.getAllUsers = catchAsyncError(async (req, res, next) => {
   // fetching all data from db
@@ -11,6 +13,8 @@ exports.getAllUsers = catchAsyncError(async (req, res, next) => {
 
   responseHandler(res, "success", 200, allUsers);
 });
+
+// =================================================================================================
 
 // get a User
 exports.getOne = catchAsyncError(async (req, res, next) => {
@@ -25,6 +29,8 @@ exports.getOne = catchAsyncError(async (req, res, next) => {
   // return success response
   responseHandler(res, "success", 200, user);
 });
+
+// =================================================================================================
 
 // create one
 exports.createNewUser = catchAsyncError(async (req, res, next) => {
@@ -47,6 +53,8 @@ exports.createNewUser = catchAsyncError(async (req, res, next) => {
   responseHandler(res, "success", 200, newUser);
 });
 
+// =================================================================================================
+
 // Delete a User admin or User
 exports.deleteUser = catchAsyncError(async (req, res, next) => {
   const user = await User.findByIdAndDelete(req.params.id);
@@ -57,6 +65,8 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
 
   responseHandler(res, "success", 204, user);
 });
+
+// =================================================================================================
 
 // update User
 exports.updateUser = catchAsyncError(async (req, res, next) => {

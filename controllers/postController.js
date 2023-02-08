@@ -1,7 +1,6 @@
 // importing files
 const catchAsyncError = include("utils/catchAsyncError");
 const Post = include("models/post");
-const Comment = include("models/comment");
 const responseHandler = include("utils/responseHandler");
 const AppError = include("utils/appError");
 
@@ -26,34 +25,6 @@ exports.createNewPost = catchAsyncError(async (req, res, next) => {
 
   // sending the response
   responseHandler(res, "success", 200, newPost);
-});
-
-// =================================================================================================
-
-// delete post
-exports.deleteMyPost = catchAsyncError(async (req, res, next) => {
-  // check if post exists or not
-  const post = await Post.findById(req.params.postId);
-
-  // retur error if post does not exist
-  if (!post) {
-    return next(new AppError("Post does not exist", 404));
-  }
-
-  // check if the post belongs to the user himself
-  if (req.user.id.toString() !== post.user.toString()) {
-    return next(
-      new AppError("You do not have the permission to delete the post!", 400)
-    );
-  }
-
-  // delete the post
-  await Post.findByIdAndDelete(req.params.postId);
-
-  // send response
-  responseHandler(res, "success", 204, post);
-
-  next();
 });
 
 // =================================================================================================
@@ -84,77 +55,37 @@ exports.getAPost = catchAsyncError(async (req, res, next) => {
 
 // =================================================================================================
 
-// like a post
-
-exports.likeAPost = catchAsyncError(async (req, res, next) => {
-  // fetching post from db
-  const post = await Post.findById(req.params.postId);
-
-  // post exits or not
-  if (!post) {
-    return next(new AppError("Post not found!", 404));
-  }
-
-  // already liked
-  if (
-    post.likedBy.filter((ele) => {
-      return ele._id.toString() === req.user.id.toString();
-    }).length !== 0
-  ) {
-    return next(new AppError("Post already liked. Cannot like again", 400));
-  }
-
-  // liking a post
-  post.likesCount += 1;
-  post.likedBy.push(req.user.id);
-
-  //
-  await post.save();
-
-  responseHandler(res, "success", 200, post);
-});
-
-// =================================================================================================
-
-// unlike post
-exports.unlikeAPost = catchAsyncError(async (req, res, next) => {
-  // fetching post from db
-  const post = await Post.findById(req.params.postId);
-
-  // post exits or not
-  if (!post) {
-    return next(new AppError("Post not found!", 404));
-  }
-
-  // not liked
-  if (
-    post.likedBy.filter((ele) => {
-      return ele._id.toString() === req.user.id.toString();
-    }).length === 0
-  ) {
-    return next(
-      new AppError(
-        "You cannot unlike the post that you have not like in the first place.",
-        400
-      )
-    );
-  }
-
-  // liking a post
-  post.likesCount -= 1;
-  post.likedBy.remove(req.user.id);
-
-  //
-  await post.save();
-
-  responseHandler(res, "success", 200, post);
-});
-
-// =================================================================================================
-
 exports.deleteAllMyPosts = catchAsyncError(async (req, res, next) => {
   const query1 = { user: req.user.id };
   await Post.deleteMany(query1);
+
+  next();
+});
+
+// =================================================================================================
+
+// delete post
+exports.deleteMyPost = catchAsyncError(async (req, res, next) => {
+  // check if post exists or not
+  const post = await Post.findById(req.params.postId);
+
+  // retur error if post does not exist
+  if (!post) {
+    return next(new AppError("Post does not exist", 404));
+  }
+
+  // check if the post belongs to the user himself
+  if (req.user.id.toString() !== post.user.toString()) {
+    return next(
+      new AppError("You do not have the permission to delete the post!", 400)
+    );
+  }
+
+  // delete the post
+  await Post.findByIdAndDelete(req.params.postId);
+
+  // send response
+  responseHandler(res, "success", 204, post);
 
   next();
 });

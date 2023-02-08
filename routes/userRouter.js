@@ -4,6 +4,8 @@ const authController = include("controllers/authController");
 const adminController = include("controllers/userCRUD/adminController");
 const postController = include("controllers/postController");
 const commentController = include("controllers/commentController");
+const passwordController = include("controllers/passwordController");
+const followController = include("controllers/followController");
 
 // importing modules
 const express = require("express");
@@ -16,13 +18,18 @@ const router = express.Router({ mergeParams: true });
 // Authentication
 router.route("/signup").post(authController.signup);
 router.route("/login").post(authController.login);
+router.route("/logout").get(authController.protect, authController.logout);
+
+// ==============================================================================================
+
 router
   .route("/updatePassword")
-  .patch(authController.protect, authController.updatePassword);
+  .patch(authController.protect, passwordController.updatePassword);
 
-router.route("/forgotPassword").post(authController.forgotPassword);
-router.route("/resetPassword/:resetToken").patch(authController.resetPassword);
-router.route("/logout").get(authController.protect, authController.logout);
+router.route("/forgotPassword").post(passwordController.forgotPassword);
+router
+  .route("/resetPassword/:resetToken")
+  .patch(passwordController.resetPassword);
 
 // ==============================================================================================
 
@@ -90,7 +97,7 @@ router
   .post(
     authController.protect,
     authController.restrictTo("user"),
-    userController.followUser
+    followController.followUser
   );
 
 router
@@ -98,7 +105,7 @@ router
   .post(
     authController.protect,
     authController.restrictTo("user"),
-    userController.unfollowUser
+    followController.unfollowUser
   );
 
 // ==============================================================================================
