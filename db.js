@@ -1,13 +1,18 @@
 const { default: mongoose } = require("mongoose");
-const mongoURL = "mongodb://localhost:27017/social-media-app";
+const mongoURL = `mongodb+srv://krishvadhani19:Testing%40123@cluster0.ldc02uh.mongodb.net/socialMediaApp?retryWrites=true&w=majority`;
 
+const connectionParams = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
 const connectToMongo = () => {
   mongoose
-    .connect(mongoURL, () => {
-      console.log("Connected to Mongo Successfully!");
+    .connect(mongoURL, connectionParams)
+    .then(() => {
+      console.log("Connected to database ");
     })
     .catch((err) => {
-      console.log(err, "Error!");
+      console.error(`Error connecting to the database. \n${err}`);
     });
 };
 
