@@ -35,9 +35,10 @@ exports.getActiveTime = catchAsyncError(async (req, res, next) => {
 
 // =================================================================================================
 exports.getTopActiveUsers = catchAsyncError(async (req, res, next) => {
-  const users = await User.find({ $sort: { activeTime: -1 } }).select(
-    "name email activeTime"
-  );
+  const users = await User.find()
+    .sort({ activeTime: -1 })
+    .limit(5)
+    .select("name email activeTime");
 
   responseHandler(res, 200, users);
 });
