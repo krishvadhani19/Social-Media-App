@@ -1,19 +1,25 @@
-const { default: mongoose } = require("mongoose");
-const mongoURL = `mongodb+srv://krishvadhani19:Testing%40123@cluster0.ldc02uh.mongodb.net/socialMediaApp?retryWrites=true&w=majority`;
+import mongoose from "mongoose";
 
-const connectionParams = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
-const connectToMongo = () => {
-  mongoose
-    .connect(mongoURL, connectionParams)
-    .then(() => {
-      console.log("Connected to database ");
-    })
-    .catch((err) => {
-      console.error(`Error connecting to the database. \n${err}`);
+let isConnected = false;
+
+export const connectToDB = async () => {
+  mongoose.set("strictQuery", true);
+
+  if (isConnected) {
+    console.log("Database already connected!");
+    return;
+  }
+
+  try {
+    mongoose.connect(process.env.MONGO_URI, {
+      dbName: "share_prompt",
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
-};
 
-module.exports = connectToMongo;
+    isConnected = true;
+    console.log("Database is connected now!");
+  } catch (error) {
+    console.log(error);
+  }
+};
